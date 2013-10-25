@@ -12,6 +12,7 @@ var TOOLS;
 		this.viewWin = ".viewWin";
 		this.viewFrm = ".viewFrm";
 		this.uriBar = ".form_text";
+		this.tabInfo = ".tabInfo";
 	}
 
 	TOOLS.Ctrl.prototype.init = function() {
@@ -78,13 +79,18 @@ var TOOLS;
 		return parentWin.find(this.viewFrm)[0];
 	}
 
-	TOOLS.Ctrl.prototype.tabList = function() {
-		var tabsInfo = this.getTabInfo();
+	TOOLS.Ctrl.prototype.tabList = function(obj) {
+		var tabsInfo = this.getTabInfo(obj);
+	}
+	TOOLS.Ctrl.prototype.closeTabInfo = function(obj) {
+		obj.remove();
 	}
 
-	TOOLS.Ctrl.prototype.getTabInfo = function() {
+	TOOLS.Ctrl.prototype.getTabInfo = function(obj) {
 		var title, favicon, url, tabAry = [];
 		var c = 0;
+		var self = this;
+		var tabObj = obj;
 		chrome.tabs.getAllInWindow(null, function(tabs) {
 			for (var i = 0, I = tabs.length; i < I; i++) {
 				if (!tabs[i].selected) {
@@ -95,8 +101,18 @@ var TOOLS;
 					c++;
 				}
 			}
-			return tabAry;
+			self.createTabList(tabAry, tabObj);
 		});
+	}
+
+	TOOLS.Ctrl.prototype.createTabList = function(tabsInfo, tabObj) {
+		var li = "";
+		for (var i = 0, I = tabsInfo.length; i < I; i++) {
+			li += '<li style="background:url(' + tabsInfo[i].favicon + ') no-repeat;"><a href="' + tabsInfo[i].url + '">' + tabsInfo[i].title + '</a></li>';
+		}
+		var ul = '<ul class="tabInfo unstyled">' + li + '</ul>';
+		tabObj.html(ul);
+
 	}
 
 	TOOLS.Ctrl.prototype.setEvent = function() {
@@ -123,6 +139,9 @@ var TOOLS;
 		});
 		this.doc.on("click", self.tab, function() {
 			self.tabList($(this));
+		});
+		this.doc.on("mouseleave", self.tabInfo, function() {
+			self.closeTabInfo($(this));
 		});
 
 	}

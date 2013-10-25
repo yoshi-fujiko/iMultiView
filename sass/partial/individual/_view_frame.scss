@@ -155,3 +155,26 @@ $view-bg-color: #f0f0ef;
 		margin: 0;
 	}
 }
+
+.tabInfo.unstyled {
+	width: 300px;
+	max-height: 400px;
+	padding: 4px;
+	overflow: scroll;
+	position: absolute;
+	top: 14px;
+	left: -286px;
+	border: solid 1px #ccc;
+	background: #fff;
+	z-index: 3;
+	text-align: left;
+	cursor: default;
+	@include border-radius(3px);
+	> li {
+		padding-left: 20px;
+		margin-bottom: 3px;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

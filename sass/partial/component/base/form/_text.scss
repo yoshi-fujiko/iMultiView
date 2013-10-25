@@ -1,0 +1,9 @@
+.form_text {
+  @include paddingForm();
+  @include inline-block();
+  @include formBorder();
+  @include border-radius(3px);
+  @include bgForm();
+  @include box-sizing(border-box);
+  outline: 0px none;
+}

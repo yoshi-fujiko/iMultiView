@@ -1,0 +1,157 @@
+// param
+$device-width: 320;
+$device-height: 640;
+$view-border-color: #c8c8c8;
+$view-bg-color: #f0f0ef;
+
+// mixin
+@mixin close-bar {
+	content: "";
+	display: block;
+	width: 10px;
+	height: 1px;
+	position: absolute;
+	top: 3px;
+	left: -1px;
+	background-color: #797979;
+}
+
+// sprite
+.spr {
+	background: url(../img/sprite.png) no-repeat;
+}
+
+// tools
+.tools {
+	display: inline-block;
+	vertical-align: middle !important;
+	letter-spacing: normal;
+	> li {
+		width: 14px;
+		height: 14px;
+		display: inline-block;
+		margin-left: 5px;
+		cursor: pointer;
+		&:first-child {
+			margin-left: 0;
+		}
+		&.btnPrev {
+			background-position: 0 0;
+		}
+		&.btnNext {
+			background-position: -15px 0;
+		}
+		&.btnReload {
+			background-position: -30px 0;
+		}
+		&.btnBlank {
+			background-position: -45px 0;
+		}
+		&.btnQr {
+			background-position: -60px 0;
+		}
+		&.btnTab {
+			background-position: -75px 0;
+			position: relative;
+		}
+	}
+	&.tabArea {
+		width: 127px;
+		text-align: right;
+	}
+	&.uriArea {
+		width: 52px;
+		height: 14px;
+	}
+	&.qrArea {
+		width: 14px;
+		height: 14px;
+	}
+}
+
+// styles
+.viewArea {
+	width: 100%;
+	margin-left: -8px;
+	padding: 10px;
+	letter-spacing: -.4em;
+}
+
+.viewWin {
+	width: #{$device-width + 10}px;
+	margin: 0 0 8px 8px;
+	display: inline-block;
+	letter-spacing: normal;
+}
+
+.viewHeader {
+	letter-spacing: -.4em;
+	.pgTtlBar {
+		width: 192px;
+		padding: 5px;
+		border: solid $view-border-color;
+		border-width: 1px 1px 0 1px;
+		background-color: $view-bg-color;
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;
+		z-index: 1;
+		letter-spacing: normal;
+		@include border-radius(3px 3px 0 0);
+		@include clearfix;
+		.pgTtl {
+			float: left;
+		}
+		.pgClse {
+			width: 8px;
+			height: 8px;
+			cursor: pointer;
+			margin-top: 4px;
+			position: relative;
+			float: right;
+			&:before {
+				@include close-bar;
+				@include rotate(45deg);
+			}
+			&:after {
+				@include close-bar;
+				@include rotate(-45deg);
+			}
+		}
+	}
+}
+
+.pgUri {
+	border: solid $view-border-color;
+	border-width: 1px 1px 0 1px;
+	background-color: $view-bg-color;
+	margin-top: -1px;
+	padding: 4px;
+	z-index: 1;
+	letter-spacing: -.4em;
+	@include border-radius(0 3px 0 0);
+	.adrsBar {
+		width: 246px;
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 5px;
+		.form_text {
+			width: 100%;
+			height: 20px;
+			@include textSmall;
+		}
+	}
+}
+
+.pgView {
+	border: solid 1px $view-border-color;
+	background-color: $view-bg-color;
+	padding: 4px 4px 0 4px;
+	@include border-radius(0 0 3px 3px);
+	.viewFrm {
+		width: 320px;
+		height: 480px;
+		border: none;
+		margin: 0;
+	}
+}

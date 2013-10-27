@@ -13,6 +13,7 @@ var TOOLS;
 		this.viewFrm = ".viewFrm";
 		this.uriBar = ".form_text";
 		this.tabInfo = ".tabInfo";
+		this.tabAnc = ".tabAnc";
 	}
 
 	TOOLS.Ctrl.prototype.init = function() {
@@ -47,8 +48,7 @@ var TOOLS;
 		var iframe = this.getIframe(obj);
 		var val = obj.val();
 		var uri = this.rewriteUri(val);
-		this.jampUri(uri, iframe);
-		obj.val(uri);
+		this.jampUri(uri, iframe, obj);
 	}
 
 	TOOLS.Ctrl.prototype.rewriteUri = function(str) {
@@ -59,8 +59,9 @@ var TOOLS;
 		return str;
 	}
 
-	TOOLS.Ctrl.prototype.jampUri = function(uri, iframe) {
+	TOOLS.Ctrl.prototype.jampUri = function(uri, iframe, address) {
 		if (uri != "") {
+			address.val(uri);
 			iframe.contentWindow.location.href = uri;
 		}
 	}
@@ -106,13 +107,26 @@ var TOOLS;
 	}
 
 	TOOLS.Ctrl.prototype.createTabList = function(tabsInfo, tabObj) {
-		var li = "";
-		for (var i = 0, I = tabsInfo.length; i < I; i++) {
-			li += '<li style="background:url(' + tabsInfo[i].favicon + ') no-repeat;"><a href="' + tabsInfo[i].url + '">' + tabsInfo[i].title + '</a></li>';
+		var li = "", tabLen = tabsInfo.length;
+		if (tabLen > 0) {
+			for (var i = 0; i < tabLen; i++) {
+				li += '<li style="background:url(' + tabsInfo[i].favicon + ') no-repeat;"><a href="' + tabsInfo[i].url + '" class="tabAnc">' + tabsInfo[i].title + '</a></li>';
+			}
+		}
+		else {
+			li += '<li>no tab</li>';
 		}
 		var ul = '<ul class="tabInfo unstyled">' + li + '</ul>';
 		tabObj.html(ul);
+	}
 
+	TOOLS.Ctrl.prototype.tabAncSwitch = function(obj, e) {
+		var iframe = this.getIframe(obj);
+		var anc = obj.attr("href");
+		var address = $(iframe).find(this.uriBar).eq(0);
+		this.jampUri(anc, iframe, address);
+		this.closeTabInfo($(iframe).find(this.tabInfo));
+		e.preventDefault();
 	}
 
 	TOOLS.Ctrl.prototype.setEvent = function() {
@@ -142,6 +156,9 @@ var TOOLS;
 		});
 		this.doc.on("mouseleave", self.tabInfo, function() {
 			self.closeTabInfo($(this));
+		});
+		this.doc.on("click", self.tabAnc, function(e) {
+			self.tabAncSwitch($(this), e);
 		});
 
 	}

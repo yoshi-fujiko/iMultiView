@@ -173,6 +173,7 @@ $view-bg-color: #f0f0ef;
 	> li {
 		padding-left: 20px;
 		margin-bottom: 3px;
+		@include background-size(16px auto !important);
 		&:last-child {
 			margin-bottom: 0;
 		}

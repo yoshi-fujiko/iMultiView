@@ -14,6 +14,7 @@ var TOOLS;
 		this.uriBar = ".form_text";
 		this.tabInfo = ".tabInfo";
 		this.tabAnc = ".tabAnc";
+		this.noFavicon = "../img/no_favicon.png";
 	}
 
 	TOOLS.Ctrl.prototype.init = function() {
@@ -61,7 +62,7 @@ var TOOLS;
 
 	TOOLS.Ctrl.prototype.jampUri = function(uri, iframe, address) {
 		if (uri != "") {
-			address.val(uri);
+			$(address).val(uri);
 			iframe.contentWindow.location.href = uri;
 		}
 	}
@@ -83,27 +84,41 @@ var TOOLS;
 	TOOLS.Ctrl.prototype.tabList = function(obj) {
 		var tabsInfo = this.getTabInfo(obj);
 	}
+
 	TOOLS.Ctrl.prototype.closeTabInfo = function(obj) {
 		obj.remove();
 	}
 
 	TOOLS.Ctrl.prototype.getTabInfo = function(obj) {
-		var title, favicon, url, tabAry = [];
-		var c = 0;
-		var self = this;
-		var tabObj = obj;
+		var self = this,
+			tabObj = obj;
+			tabAry = [];
 		chrome.tabs.getAllInWindow(null, function(tabs) {
-			for (var i = 0, I = tabs.length; i < I; i++) {
-				if (!tabs[i].selected) {
-					tabAry[c] = {};
-					tabAry[c].title = tabs[i].title;
-					tabAry[c].favicon = tabs[i].favIconUrl;
-					tabAry[c].url = tabs[i].url;
-					c++;
-				}
-			}
+			tabAry = self.createTabInfo(tabs);
 			self.createTabList(tabAry, tabObj);
 		});
+	}
+
+	TOOLS.Ctrl.prototype.createTabInfo = function(tabs) {
+		var tabAry = []
+			c = 0;
+		for (var i = 0, I = tabs.length; i < I; i++) {
+			if (!tabs[i].selected) {
+				tabAry[c] = {};
+				tabAry[c].title = tabs[i].title;
+				tabAry[c].favicon = this.checkFavicon(tabs[i].favIconUrl);
+				tabAry[c].url = tabs[i].url;
+				c++;
+			}
+		}
+		return tabAry;
+	}
+
+	TOOLS.Ctrl.prototype.checkFavicon = function(icn) {
+		if (!icn) {
+			return this.noFavicon;
+		}
+		return icn;
 	}
 
 	TOOLS.Ctrl.prototype.createTabList = function(tabsInfo, tabObj) {
@@ -122,11 +137,13 @@ var TOOLS;
 
 	TOOLS.Ctrl.prototype.tabAncSwitch = function(obj, e) {
 		var iframe = this.getIframe(obj);
+		var parentWin = this.getParentWin(obj);
 		var anc = obj.attr("href");
-		var address = $(iframe).find(this.uriBar).eq(0);
+		var address = $(parentWin).find(this.uriBar);
 		this.jampUri(anc, iframe, address);
-		this.closeTabInfo($(iframe).find(this.tabInfo));
+		this.closeTabInfo($(parentWin).find(this.tabInfo));
 		e.preventDefault();
+		e.stopPropagation();
 	}
 
 	TOOLS.Ctrl.prototype.setEvent = function() {

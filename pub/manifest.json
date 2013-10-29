@@ -4,7 +4,9 @@
 	"version": "0.0.0",
 	"description": "temp",
 	"permissions": [
-		"tabs", "http://*/*","https://*/*","file://*/*"
+		"tabs",
+		"webRequest",
+		"*://*/*"
 	],
 	"background": {
 		"scripts": ["js/background.js"]

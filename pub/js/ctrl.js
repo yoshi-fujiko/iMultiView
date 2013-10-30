@@ -1,3 +1,5 @@
+var BGPG = chrome.extension.getBackgroundPage();
+
 var TOOLS;
 (function(TOOLS) {
 
@@ -23,17 +25,20 @@ var TOOLS;
 
 	TOOLS.Ctrl.prototype.reloaded = function(obj) {
 		var iframe = this.getIframe(obj);
-		iframe.contentWindow.location.reload(true);
+		//iframe.contentWindow.location.reload(true);
+		iframe.contentWindow.postMessage('reload','*');
 	}
 
 	TOOLS.Ctrl.prototype.preved = function(obj) {
 		var iframe = this.getIframe(obj);
-		iframe.contentWindow.history.back();
+		//iframe.contentWindow.history.back();
+		iframe.contentWindow.postMessage('back','*');
 	}
 
 	TOOLS.Ctrl.prototype.nexted = function(obj) {
 		var iframe = this.getIframe(obj);
-		iframe.contentWindow.history.forward();
+		//iframe.contentWindow.history.forward();
+		iframe.contentWindow.postMessage('forward','*');
 	}
 
 	TOOLS.Ctrl.prototype.iframeToWin = function(obj) {

@@ -19,3 +19,7 @@ chrome.webRequest.onHeadersReceived.addListener(
   },
   ['responseHeaders']
 );
+
+var test = function(iframe) {
+  iframe.contentWindow.location.reload(true);
+}

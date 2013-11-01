@@ -25,19 +25,16 @@ var TOOLS;
 
 	TOOLS.Ctrl.prototype.reloaded = function(obj) {
 		var iframe = this.getIframe(obj);
-		//iframe.contentWindow.location.reload(true);
 		iframe.contentWindow.postMessage('reload','*');
 	}
 
 	TOOLS.Ctrl.prototype.preved = function(obj) {
 		var iframe = this.getIframe(obj);
-		//iframe.contentWindow.history.back();
 		iframe.contentWindow.postMessage('back','*');
 	}
 
 	TOOLS.Ctrl.prototype.nexted = function(obj) {
 		var iframe = this.getIframe(obj);
-		//iframe.contentWindow.history.forward();
 		iframe.contentWindow.postMessage('forward','*');
 	}
 
@@ -191,3 +188,9 @@ $(function() {
 	TOOLS.ctrl = new TOOLS.Ctrl();
 	TOOLS.ctrl.init();
 });
+
+window.addEventListener("message", function(e) {
+	console.log(e.data);
+	console.log(e.origin);
+	console.log(e.source);
+}, false);

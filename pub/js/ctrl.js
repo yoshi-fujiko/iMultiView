@@ -200,6 +200,7 @@ $(function() {
 });
 
 window.addEventListener("message", function(e) {
+	console.log(e);
 	console.log(e.data);
 	console.log(e.origin);
 	console.log(e.source);

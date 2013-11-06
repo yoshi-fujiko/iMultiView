@@ -7,7 +7,8 @@ var IMVMSG;
 	}
 	IMVMSG.Receive.prototype.init = function(e) {
 		var flag = e.data;
-		var self = this;
+		console.log(flag)
+		if (e.origin.indexOf("chrome-extension://") < 0) return;
 		switch(flag) {
 			case "reload":
 				location.reload();
@@ -19,13 +20,17 @@ var IMVMSG;
 				history.forward();
 				break;
 			default:
+				this.reSiteInfo(flag);
 				break;
 		}
+	}
+	IMVMSG.Receive.prototype.reSiteInfo = function(id) {
+		console.log(id);
 	}
 })(IMVMSG || (IMVMSG = {}));
 
 IMVMSG.receive = new IMVMSG.Receive();
-window.addEventListener("message", IMVMSG.receive.init, false);
+window.addEventListener("message", function(e) {IMVMSG.receive.init(e)}, false);
 
 
 var IMVVEIWINFO;

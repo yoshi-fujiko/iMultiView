@@ -148,6 +148,13 @@ var TOOLS;
 		e.stopPropagation();
 	}
 
+	TOOLS.Ctrl.prototype.getSiteInfo = function(obj) {
+		var iframe = this.getIframe(obj);
+		var id = $(obj).attr("id");
+		console.log(id)
+		//iframe.contentWindow.postMessage(id,'*');
+	}
+
 	TOOLS.Ctrl.prototype.setEvent = function() {
 		var self = this;
 		this.doc.on("click", self.reload, function() {
@@ -179,6 +186,9 @@ var TOOLS;
 		this.doc.on("click", self.tabAnc, function(e) {
 			self.tabAncSwitch($(this), e);
 		});
+		/*this.doc.on("mousemove", self.viewWin, function(e) {
+			self.getSiteInfo($(this));
+		});*/
 
 	}
 
